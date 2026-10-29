@@ -5,6 +5,7 @@ part of sprintf;
 /// Replaces the heap-allocated `IntFormatter` class + `Map<String,dynamic>`
 /// with a single static function using typed [FormatOptions] and `padLeft`.
 const int _intMaxInt = 0x1FFFFFFFFFFFFF; // JS 53-bit limit
+const int _two53 = 0x20000000000000;
 
 String _formatInt(int value, int radix, FormatOptions o) {
   var prefix = '';
@@ -17,8 +18,10 @@ String _formatInt(int value, int radix, FormatOptions o) {
       v = -v;
       sign = '-';
     } else {
-      // Reverse twos complement for non-decimal radixes
-      v = (_intMaxInt - (~v) & _intMaxInt);
+      // Two's complement in 53 bits: 2^53 + v. As arithmetic, because ~ and
+      // & truncate to 32 bits under dart2js (|%x| of -1 was ffffffff there).
+      // Below -2^53 (the VM only) the bit form wraps as before.
+      v = v >= -_two53 ? _two53 + v : (_intMaxInt - (~v) & _intMaxInt);
     }
   }
 
