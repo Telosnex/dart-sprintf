@@ -1,3 +1,7 @@
+// A benchmark: it blocks a browser until the suites time out.
+@TestOn('vm')
+library;
+
 // ignore_for_file: avoid_print, unused_field, unnecessary_this
 //
 // Head-to-head PerfTester benchmark: original sprintf v7.0.0 vs rewrite.
@@ -9,6 +13,8 @@
 //   dart run test/sprintf_perf_test.dart
 
 import 'dart:math';
+
+import 'package:test/test.dart' show TestOn;
 
 import 'package:sprintf/sprintf.dart' as new_impl;
 
