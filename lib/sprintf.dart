@@ -1,6 +1,5 @@
 library sprintf;
 
-
 part 'src/formatters/Formatter.dart';
 part 'src/formatters/int_formatter.dart';
 part 'src/formatters/float_formatter.dart';
